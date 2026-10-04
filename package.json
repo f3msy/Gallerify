@@ -1,0 +1,25 @@
+{
+  "name": "minecraft-banner-changer",
+  "version": "1.0.0",
+  "description": "Standalone tool to change Minecraft profile banners using prismarine-AuthF",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "minecraft",
+    "banner",
+    "prismarine-AuthF",
+    "bedrock"
+  ],
+  "AuthFor": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.5",
+    "ora": "^5.4.1",
+    "prismarine-AuthF": "^3.1.1",
+    "sharp": "^0.35.5"
+  }
+}
