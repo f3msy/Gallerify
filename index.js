@@ -117,10 +117,10 @@ async function uploadBanner(file, spinner) {
         signal: AbortSignal.timeout(30_000),
         headers: {
             Authorization: token,
-            "User-Agent": "libhttpclient/1.0.0.0",
-            "Content-Type": "image/jpeg",
+            "Content-Type": "application/octet-stream",
             "x-ms-showcased-featured": "true",
-            "x-ms-showcased-timetaken": new Date().toISOString()
+            "x-ms-showcased-timetaken": new Date().toISOString(),
+            "Content-Length": String(image.length)
         },
         body: image
     });
