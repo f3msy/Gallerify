@@ -11,7 +11,7 @@ Set your Minecraft profile banner from a local image.
 Requires Node.js 18 or newer.
 
 ```bash
-npm install i
+npm i
 ```
 
 Put your images in the `images` folder. The path is set at the top of `index.js` (`imageDir`).
