@@ -4,7 +4,7 @@ Set your Minecraft profile banner from a local image.
 
 ## Example
 
-![Gallerify example](https://cdn.discordapp.com/attachments/1544356375000522883/1556304414652768398/example.png?backend=b2&ex=6ac5a72f&is=6ac455af&hm=4876d59c78f64fbd20b72458ff482683af82df43fcd5bcf41c66371b5cc43b03&)
+![Gallerify example](example.png)
 
 ## Setup
 
