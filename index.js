@@ -1,5 +1,3 @@
-"use strict";
-
 const { Authflow } = require("prismarine-auth");
 const fs = require("fs");
 const path = require("path");
@@ -8,14 +6,14 @@ const chalk = require("chalk");
 const ora = require("ora");
 const sharp = require("sharp");
 
-const imageDir = String.raw`C:\Users\Administrator\Desktop\banner-tool\images`;
+const imageDir = path.join(__dirname, "images");
 const cacheDir = path.join(__dirname, ".auth");
 const linkMarker = path.join(cacheDir, "linked");
 const apiEndpoint = "https://persona-secondary.franchise.minecraft-services.net/api/v1.0/gallery";
 const bannerSize = { width: 1920, height: 1080 };
 const authOptions = { flow: "sisu", authTitle: "0000000048183522", deviceType: "Android" };
 
-const taggings = { ok: chalk.green("[O]"), err: chalk.red("[X]"), info: chalk.cyan("[I]") };
+const taggings = { ok: chalk.bold.green("[+]"), err: chalk.bold.red("[!]"), info: chalk.bold.cyan("[i]") };
 const log = (type, text) => console.log(`  ${taggings[type]} ${text}`);
 const fit = (text) => text.slice(0, (process.stdout.columns || 80) - 8);
 
@@ -144,11 +142,11 @@ async function main() {
 
         const choice = await select(
             [
-                `  Account:   ${name !== null ? chalk.green(name || "linked") : chalk.yellow("not linked (login on first upload)")}`,
-                `  Images:    ${images.length}`,
+                `  Gamertag:   ${name !== null ? chalk.bold.cyan(name) : chalk.bold.red("not linked (Press Enter to Login)")}`,
+                `  Images:     ${images.length}`,
                 ...(images.length ? [] : [chalk.yellow(`  ${fit(`Add images to ${imageDir}`)}`)]),
                 "",
-                "  Select a banner:",
+                "  Select a Image:",
                 ""
             ],
             [
