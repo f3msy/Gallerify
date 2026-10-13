@@ -87,6 +87,8 @@ async function fetchGamertag(authflow) {
 async function getToken(spinner) {
     const authflow = new Authflow("banner-tool", cacheDir, authOptions, ({ user_code }) => {
         spinner.stop();
+        process.stdout.write('\x1b[2J\x1b[H');
+        console.log(`\n  ${chalk.bold.cyan("GALLERIFY")}\n  ${chalk.gray("-".repeat(40))}\n`);
         log("info", `Log in at ${chalk.cyan(`https://microsoft.com/link?otc=${user_code}`)}`);
         log("info", `Code: ${chalk.bold(user_code)}`);
         spinner.start("Waiting for login...");
@@ -133,7 +135,7 @@ async function uploadBanner(file, spinner) {
 
 async function main() {
     readline.emitKeypressEvents(process.stdin);
-    console.clear();
+    process.stdout.write('\x1b[2J\x1b[H');
     console.log(`\n  ${chalk.bold.cyan("GALLERIFY")}\n  ${chalk.gray("-".repeat(40))}\n`);
 
     while (true) {
@@ -161,17 +163,44 @@ async function main() {
 
         if (choice.action === "logout") {
             logout();
+            process.stdout.write('\x1b[2J\x1b[H');
+            console.log(`\n  ${chalk.bold.cyan("GALLERIFY")}\n  ${chalk.gray("-".repeat(40))}\n`);
             log("ok", "Logged out.");
-            console.log();
+            await new Promise(r => setTimeout(r, 1000));
         } else if (choice.file) {
-            const spinner = ora({ text: "Preparing image...", spinner: "line", discardStdin: false }).start();
-            try {
-                await uploadBanner(choice.file, spinner);
-                spinner.stopAndPersist({ symbol: `  ${taggings.ok}`, text: `Banner set to ${chalk.cyan(choice.file)}` });
-            } catch (error) {
-                spinner.stopAndPersist({ symbol: `  ${taggings.err}`, text: error.message });
+            if (!account()) {
+                const spinner = ora({ text: "Logging in...", spinner: "line", discardStdin: false }).start();
+                try {
+                    await getToken(spinner);
+                    spinner.stop();
+                    process.stdout.write('\x1b[2J\x1b[H');
+                    console.log(`\n  ${chalk.bold.cyan("GALLERIFY")}\n  ${chalk.gray("-".repeat(40))}\n`);
+                    log("ok", "Logged in successfully.");
+                    await new Promise(r => setTimeout(r, 1000));
+                } catch (error) {
+                    spinner.stop();
+                    process.stdout.write('\x1b[2J\x1b[H');
+                    console.log(`\n  ${chalk.bold.cyan("GALLERIFY")}\n  ${chalk.gray("-".repeat(40))}\n`);
+                    log("err", error.message);
+                    await new Promise(r => setTimeout(r, 2000));
+                }
+            } else {
+                const spinner = ora({ text: "Preparing image...", spinner: "line", discardStdin: false }).start();
+                try {
+                    await uploadBanner(choice.file, spinner);
+                    spinner.stop();
+                    process.stdout.write('\x1b[2J\x1b[H');
+                    console.log(`\n  ${chalk.bold.cyan("GALLERIFY")}\n  ${chalk.gray("-".repeat(40))}\n`);
+                    log("ok", `Banner set to ${chalk.cyan(choice.file)}`);
+                    await new Promise(r => setTimeout(r, 1000));
+                } catch (error) {
+                    spinner.stop();
+                    process.stdout.write('\x1b[2J\x1b[H');
+                    console.log(`\n  ${chalk.bold.cyan("GALLERIFY")}\n  ${chalk.gray("-".repeat(40))}\n`);
+                    log("err", error.message);
+                    await new Promise(r => setTimeout(r, 2000));
+                }
             }
-            console.log();
         }
     }
 }
